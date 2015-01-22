@@ -1,5 +1,8 @@
 define common::break($timeout=120, $sleep=2, $receiptdir=$common::receipt_dir, $path='/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin') {
   #universal compatible:
+  notify { "break_for_${title}":
+    message => "Breaking for ${timeout}s, touch ${receiptdir}/break_for_${title} to continue...", 
+  }
   exec { "break_for_${title}":
     command => "bash -c 'while [ ! -e ${receiptdir}/${title} ]; do sleep ${sleep}; done && rm -f ${receiptdir}/break_for_${title}'",
     path => $path,
